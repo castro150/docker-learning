@@ -1,5 +1,11 @@
-$ docker ps [-l]
-Lista containers em uso, -l mostra os em standby.
+$ docker ps [-l] [-a]
+Lista containers em uso, -l mostra os em standby, -a mostra todos os já criados.
+
+$ docker stop $(docker ps -q)
+Comandos em cascata, -q lista só os IDs dos containers, e para todos os IDs listados.
+
+$ docker port [id-container]
+Lista o mapeamento de portas do container.
 
 $ docker images
 Lista as imagens do docker existentes na máquina.
@@ -21,12 +27,12 @@ Cria uma tag para a imagem, em um dado repositório de um usuário do registry, 
 vai aparecer uma nova linha, com a nova imagem associada ao repositório. Pode dar push nela também. Agora é possível rodar a imagem
 a partir de qualquer máquina com o docker run [username]/[repository:tag], se a imagem não existe na máquina, o docker faz o pull. 
 
-$ docker run [-name container-name] [image-name] [command]
+$ docker run [-it] [-name container-name] [image-name] [command]
 Roda a imagem "image-name" em um container com ID (nome) "container-name", sendo que é possível especificar um comando para
-ser rodado no container, como "echo 'hello'".
+ser rodado no container, como "echo 'hello'". O -it roda o bash da imagem no terminal local.
 
-$ docker run [-p local-port:image-port] [image-name]
-Roda num container a imagem "image-name" mapeando a porta "image-port" para a porta local "local-port".
+$ docker run [-p local-port:image-port] [-P] [-e ENVAR="value"] [image-name]
+Roda num container a imagem "image-name" mapeando a porta "image-port" para a porta local "local-port", -P pega portas aleatórios do pc para as portas do container, -e pode ser usando para setar uma ENVAR dentro do container.
 
 $ docker run -d [image-name]
 Roda o container em modo "detached", background, retorna o ID extendido do container.
@@ -34,11 +40,20 @@ Roda o container em modo "detached", background, retorna o ID extendido do conta
 $ docker run [container-name]
 Permite rodar um container que está em standy.
 
-$ docker stop [container-name]
-Para um conteiner específico.
+$ docker start [-a] [-i] [container-id]
+Roda um container que está parado, o -a é o attach e o -i é o iterativo, como no -it.
+
+$ docker stop [-t time] [container-name || container-id]
+Para um conteiner específico, -t é o tempo em segundos que vai esperar para parar o container, default 10 segundos.
 
 $ docker rm [container-name]
 Remove permanentemente o contaier.
+
+$ docker container prune
+Remove todos os containeres parados.
+
+$ docker rmi [image-name]
+Remove a image.
 
 $ docker build -t [image-name] .
 Builda uma imagem do docker a partir do que foi configurado no Dockerfile do diretório atual, onde -t é a tag.
