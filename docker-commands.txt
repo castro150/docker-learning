@@ -1,0 +1,78 @@
+$ docker ps [-l]
+Lista containers em uso, -l mostra os em standby.
+
+$ docker images
+Lista as imagens do docker existentes na máquina.
+
+$ docker search [image-name]
+Procura uma imagem de nome "image-name" no repositório de imagens do docker.
+
+$ docker commit [container-name] [image-name]
+Salva o estado do container em uma imagem, podendo ser uma nova imagem ou uma já existente.
+
+$ docker push [username/image-name]
+Da o push da imagem para o repositório de imagens do docker.
+
+$ docker login
+Loga no Docker Public Registry.
+
+$ docker tag [image-name] [username]/[repository:tag]
+Cria uma tag para a imagem, em um dado repositório de um usuário do registry, a tag é a versão por exemplo. Rodando o docker images,
+vai aparecer uma nova linha, com a nova imagem associada ao repositório. Pode dar push nela também. Agora é possível rodar a imagem
+a partir de qualquer máquina com o docker run [username]/[repository:tag], se a imagem não existe na máquina, o docker faz o pull. 
+
+$ docker run [-name container-name] [image-name] [command]
+Roda a imagem "image-name" em um container com ID (nome) "container-name", sendo que é possível especificar um comando para
+ser rodado no container, como "echo 'hello'".
+
+$ docker run [-p local-port:image-port] [image-name]
+Roda num container a imagem "image-name" mapeando a porta "image-port" para a porta local "local-port".
+
+$ docker run -d [image-name]
+Roda o container em modo "detached", background, retorna o ID extendido do container.
+
+$ docker run [container-name]
+Permite rodar um container que está em standy.
+
+$ docker stop [container-name]
+Para um conteiner específico.
+
+$ docker rm [container-name]
+Remove permanentemente o contaier.
+
+$ docker build -t [image-name] .
+Builda uma imagem do docker a partir do que foi configurado no Dockerfile do diretório atual, onde -t é a tag.
+
+$ docker swarm init
+Inicia o swarm (conjunto de máquina no cluster para a aplicação), a máquina se torna o swarm manager.
+
+$ docker swarm join
+Outra máquina executa este comando (pode ser física ou virtual) para se tornar "worker" no swarm.
+
+$ docker stack deploy -c docker-compose.yml [app-name]
+Sobe a partir o serviço (service) do docker-compose uma aplicação de nome "app-name".
+
+$ docker service ls
+Exibe os serviços que estão rodando, com quantidade de replicas e outras informações.
+
+$ docker service ps [app-name]
+Exibe as tasks do serviço "app-name", cada replica vai ter uma task com um ID. Uma task é um container rodando um serviço.
+
+$ docker stack rm [app-name]
+Para um serviço de nome "app-name".
+
+$ docker swarm leave --force
+Derruba o swarm, ai todas as tasks somem.
+
+$ docker-machine create --driver virtualbox [vm-name]
+Cria uma máquina virtual com o VirtualBox, de nome "vm-name".
+
+$ docker-machine ls
+Lista as máquinas virtuais.
+
+$ docker-machine ssh [vm-name] "[command]"
+Roda o comando "command" na máquina virutal "vm-name".
+
+$ docker node ls
+No swarm manager exibe todos os nós.
+
