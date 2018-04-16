@@ -34,11 +34,17 @@ ser rodado no container, como "echo 'hello'". O -it roda o bash da imagem no ter
 $ docker run [-p local-port:image-port] [-P] [-e ENVAR="value"] [image-name]
 Roda num container a imagem "image-name" mapeando a porta "image-port" para a porta local "local-port", -P pega portas aleatórios do pc para as portas do container, -e pode ser usando para setar uma ENVAR dentro do container.
 
+$ docker run [-v "host-dir":"volume"] [image-name]
+Cria um container com o volume "volume", ou seja, uma pasta no container que vai ter os dados guardados no host, em "host-dir".
+
 $ docker run -d [image-name]
 Roda o container em modo "detached", background, retorna o ID extendido do container.
 
 $ docker run [container-name]
 Permite rodar um container que está em standy.
+
+$ docker inspect
+Imprime informações do container.
 
 $ docker start [-a] [-i] [container-id]
 Roda um container que está parado, o -a é o attach e o -i é o iterativo, como no -it.
