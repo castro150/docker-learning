@@ -27,15 +27,15 @@ Cria uma tag para a imagem, em um dado repositório de um usuário do registry, 
 vai aparecer uma nova linha, com a nova imagem associada ao repositório. Pode dar push nela também. Agora é possível rodar a imagem
 a partir de qualquer máquina com o docker run [username]/[repository:tag], se a imagem não existe na máquina, o docker faz o pull. 
 
-$ docker run [-it] [-name container-name] [image-name] [command]
+$ docker run [-it] [--name container-name] [--network network-name] [image-name] [command]
 Roda a imagem "image-name" em um container com ID (nome) "container-name", sendo que é possível especificar um comando para
-ser rodado no container, como "echo 'hello'". O -it roda o bash da imagem no terminal local.
+ser rodado no container, como "echo 'hello'". O -it roda o bash da imagem no terminal local. Container conectado à rede network-name.
 
 $ docker run [-p local-port:image-port] [-P] [-e ENVAR="value"] [image-name]
 Roda num container a imagem "image-name" mapeando a porta "image-port" para a porta local "local-port", -P pega portas aleatórios do pc para as portas do container, -e pode ser usando para setar uma ENVAR dentro do container.
 
-$ docker run [-v "host-dir":"volume"] [image-name]
-Cria um container com o volume "volume", ou seja, uma pasta no container que vai ter os dados guardados no host, em "host-dir".
+$ docker run [-v "host-dir":"volume"] [-w "working-dir"] [image-name]
+Cria um container com o volume "volume", ou seja, uma pasta no container que vai ter os dados guardados no host, em "host-dir". O -w inicializa o container dentro da pasta "working-dir", para executar comandos por exemplo.
 
 $ docker run -d [image-name]
 Roda o container em modo "detached", background, retorna o ID extendido do container.
@@ -52,8 +52,8 @@ Roda um container que está parado, o -a é o attach e o -i é o iterativo, como
 $ docker stop [-t time] [container-name || container-id]
 Para um conteiner específico, -t é o tempo em segundos que vai esperar para parar o container, default 10 segundos.
 
-$ docker rm [container-name]
-Remove permanentemente o contaier.
+$ docker rm [container-name] [-f]
+Remove permanentemente o contaier, -f para o container antes de remover, se estiver rodando.
 
 $ docker container prune
 Remove todos os containeres parados.
@@ -61,8 +61,8 @@ Remove todos os containeres parados.
 $ docker rmi [image-name]
 Remove a image.
 
-$ docker build -t [image-name] .
-Builda uma imagem do docker a partir do que foi configurado no Dockerfile do diretório atual, onde -t é a tag.
+$ docker build [-f Dockerfile] [-t image-name] .
+Builda uma imagem do docker a partir do que foi configurado no Dockerfile do diretório atual, onde -t é a tag, -f especifica o Dockerfile, se necessário (Dockerfile é padrão).
 
 $ docker swarm init
 Inicia o swarm (conjunto de máquina no cluster para a aplicação), a máquina se torna o swarm manager.
@@ -96,4 +96,31 @@ Roda o comando "command" na máquina virutal "vm-name".
 
 $ docker node ls
 No swarm manager exibe todos os nós.
+
+$ docker network create [--driver bridge] [network-name]
+Cria a rede de nome network-name usando o driver bridge, que é o mais comum.
+
+$ docker network ls
+Lista as redes do Docker.
+
+$ docker network inspect [network-name]
+Inspeciona a rede especificada, mostrando inclusive os containers conectados por ela.
+
+$ docker-compose build
+Roda a build especificada no docker-compose.yml.
+
+$ docker-compose up [-d]
+Sobe os containers do docker-compose.yml. O -d é para detatched.
+
+$ docker-compose ps
+Lista os serviços rodando.
+
+$ docker-compose down
+Para os containers e REMOVE eles.
+
+$ docker exec [-it] [container-name] [command]
+Executa o comando no container especificado. O -it é para modo iterativo.
+
+$ docker-compose restart
+Para e re-executa os serviços, é como dar o down e o up em seguida.
 

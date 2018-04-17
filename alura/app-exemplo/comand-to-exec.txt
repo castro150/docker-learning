@@ -1,0 +1,10 @@
+# o $(pwd) escreve a pasta local
+docker run -d -p 8080:3000 -v "$(pwd):/var/www" -w "/var/www" node npm start
+
+# executar a partir do Dockerfile
+docker build -f Dockerfile -t castro150/node .
+docker run -d -p 8080:3000 castro150/node
+
+# rodar alura-books com mongo (precisa da minha-rede criada)
+docker run -d --name meu-mongo --network minha-rede mongo
+docker run -d -p 8080:3000 --network minha-rede douglasq/alura-books:cap05
